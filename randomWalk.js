@@ -8,7 +8,7 @@
   var CELL_SIZE_PX = 15;
   var easel = {
     selector: 0,
-    wcolors:  ["#D41316","#55F01D","#EFFA1E","#FFBA26","#00E3E0","#3064FF","#F261FF"],
+    wcolors:  ["#D41316","#55F01D","#F8FF6B","#FFDB3B","#00E3E0","#3064FF","#F261FF"],
     wpcolors: ["#9C1F21","#328C11","#CCD613","#E89F00","#1AABA9","#1643C9","#B221BF"],
     bgcolor: "#333333"
   }
