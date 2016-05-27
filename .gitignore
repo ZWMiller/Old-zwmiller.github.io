@@ -1,0 +1,11 @@
+*.*~
+*.swp*
+*.swo*
+*sql*
+baseballDatabank*
+baseballdatabank*
+*DS_*
+d3/*
+*.zip
+nanobar-master/*
+*.xcf
