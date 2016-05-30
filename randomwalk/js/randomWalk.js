@@ -57,11 +57,6 @@ function displaySpace(walkers) {
       cell.style.background = wlk.pcolor;
     }
   }
-  /*if(wlk.needclear === 1){
-    row = table.rows[wlk.clearposition[1]];
-    cell = row.cells[wlk.clearposition[0]];
-    cell.style.background = wlk.bcolor;
-  }*/
 }
 
 
@@ -136,11 +131,7 @@ function runProgram(walkers){
 
 function evolveWalkers(walkers){
   for(var wlk of walkers){
-    if(wlk.previouspositions.length > 5){
-      wlk.clearposition = [wlk.previouspositions[4][0],wlk.previouspositions[4][1]];
-      wlk.needclear = 1;
-      wlk.previouspositions.pop(); 
-    }
+    wlk.previouspositions.pop(); 
     wlk.previouspositions.push([wlk.x,wlk.y]);
 
     var rnd = Math.random()*4;
@@ -172,7 +163,6 @@ function instantiateWalker(clr1, clr2){
     y: Math.floor(Math.random()*getHeight()),
     previouspositions: [],
     clearposition: [],
-    needclear: 0,
     color:  clr1,
     pcolor: clr2,
     bcolor: easel.bgcolor
