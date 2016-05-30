@@ -1,8 +1,10 @@
 var simulationData = {};
 simulationData.teams = [];
+var leagueAverage = {};
 
 function onOpen() {
   createTeams();
+  leagueAverage = createLeagueAverages();
   setDefaultValues();
 }
 
@@ -33,7 +35,7 @@ function createTeamTwo() {
     currentHitterId: 0,
     score: 0,
     gameRecord: 0,
-    name: 'Team2'
+    name: 'Team2',
   }
 }
 
@@ -43,6 +45,23 @@ function teamOne() {
 
 function teamTwo() {
   return simulationData.teams[1];
+}
+
+function createLeagueAverages() {
+  return { 
+      pa: 600,
+      hits: 134,
+      doubles: 27,
+      triples: 3,
+      homeruns: 16,
+      walks: 55,
+      onbasepercentage: 0.315,
+      era: 4.02,
+      whip: 1.32,
+      Kperc: 20.4,
+      BBperc: 7.7,
+      GBperc: 45.3, 
+  }
 }
 
 function getLineup(team) {
@@ -84,6 +103,7 @@ function getLineup(team) {
   var pitcherStats;
   var eraL = document.getElementById('eraBoxid'+team.name).value;
   var whipL = document.getElementById('whipBoxid'+team.name).value;
+
   pitcherStats = {
     whip: whipL,
     era: eraL,
@@ -92,6 +112,7 @@ function getLineup(team) {
   team.batters = batterStats;
   team.pitcher = pitcherStats;
 }
+
 function setToReference(teamNum){
   var team = simulationData.teams[teamNum-1];
   var pa  = document.getElementById('plateAppearanceBox'+team.name).value;
@@ -117,14 +138,14 @@ function setToReference(teamNum){
 
 function setReferenceValues(team){
   var teamId = team.name;
-  document.getElementById('plateAppearanceBox'+teamId).value = 600;
-  document.getElementById('hitsBox'+teamId).value = 134;
-  document.getElementById('doublesBox'+teamId).value = 27;
-  document.getElementById('triplesBox'+teamId).value = 3;
-  document.getElementById('homeRunBox'+teamId).value = 16;
-  document.getElementById('baseOnBallBox'+teamId).value = 55;
-  document.getElementById('eraBox'+team.name).value = 4.02;
-  document.getElementById('whipBox'+team.name).value = 1.32;
+  document.getElementById('plateAppearanceBox'+teamId).value = leagueAverage.pa;
+  document.getElementById('hitsBox'+teamId).value = leagueAverage.hits;
+  document.getElementById('doublesBox'+teamId).value = leagueAverage.doubles;
+  document.getElementById('triplesBox'+teamId).value = leagueAverage.triples;
+  document.getElementById('homeRunBox'+teamId).value = leagueAverage.homeruns;
+  document.getElementById('baseOnBallBox'+teamId).value = leagueAverage.walks;
+  document.getElementById('eraBox'+team.name).value = leagueAverage.era;
+  document.getElementById('whipBox'+team.name).value = leagueAverage.whip;
 
 }
 
@@ -134,16 +155,17 @@ function setToLeagueAverage(teamID){
 
 function setToStartingValues(team) {
   for (var currentPlayerNumber = team.firstPlayerNumber; currentPlayerNumber <= team.lastPlayerNumber; currentPlayerNumber++) {
-    document.getElementById('plateAppearanceBoxid'+currentPlayerNumber).value = 600;
-    document.getElementById('hitsBoxid'+currentPlayerNumber).value = 134;
-    document.getElementById('doublesBoxid'+currentPlayerNumber).value = 27;
-    document.getElementById('triplesBoxid'+currentPlayerNumber).value = 3;
-    document.getElementById('homeRunBoxid'+currentPlayerNumber).value = 16;
-    document.getElementById('baseOnBallBoxid'+currentPlayerNumber).value = 55;
+    document.getElementById('plateAppearanceBoxid'+currentPlayerNumber).value = leagueAverage.pa;
+    document.getElementById('hitsBoxid'+currentPlayerNumber).value = leagueAverage.hits;
+    document.getElementById('doublesBoxid'+currentPlayerNumber).value = leagueAverage.doubles;
+    document.getElementById('triplesBoxid'+currentPlayerNumber).value = leagueAverage.triples;
+    document.getElementById('homeRunBoxid'+currentPlayerNumber).value = leagueAverage.homeruns;
+    document.getElementById('baseOnBallBoxid'+currentPlayerNumber).value = leagueAverage.walks;
   }
-  document.getElementById('eraBoxid'+team.name).value = 4.02;
-  document.getElementById('whipBoxid'+team.name).value = 1.32;
+  document.getElementById('eraBoxid'+team.name).value = leagueAverage.era;
+  document.getElementById('whipBoxid'+team.name).value = leagueAverage.whip;
 }
+
 
 function setDefaultValues() {
   for(var team of simulationData.teams) {
@@ -256,33 +278,34 @@ function makeHisto(data,title,division) {
   $("svg").css({top: 20, left: 80, padding: 20, position:'relative'});
 }
 
-function getPitcher(team){
-  var pitcher;
+function getOpponent(team){
+  var opponent;
   if(team == teamOne())
-    pitcher = teamTwo().pitcher;
+    opponent = teamTwo();
   if(team == teamTwo())
-    pitcher = teamOne().pitcher;
-  return pitcher;
+    opponent = teamOne();
+  return opponent;
 }
 
 function runSimInning(team){
   var hitType=0;
   var baseState=[0,0,0];
   var batterStats = [];
-  getLineup(team);
   var innStats = {
     hits: 0,
     runs: 0,
     outs: 0
   };
 
-  var pitcher = getPitcher(team);
+  getLineup(team);
+  getLineup(getOpponent(team));
+  var pitcher = getOpponent(team).pitcher;
 
   while(innStats.outs < 3) {
     var battingAverage = team.batters[team.currentHitterId].battingaverage;
     var onBasePerc = team.batters[team.currentHitterId].onbasepercentage;
     team.batters[team.currentHitterId].atbatsincurrentsim++;
-    if(simAtBat(onBasePerc,pitcher)) {
+    if(simAtBat(team.batters[team.currentHitterId],pitcher)) {
       innStats.hits++;
       hitType = determineHitType(team);
       innStats.runs += moveRunners(hitType, baseState);
@@ -312,8 +335,9 @@ function checkBatterStats(battingAverage,OBP) {
   }
 }
 
-function simAtBat(OBP,pitcher) {
-  if(Math.random() < (OBP*(pitcher.whip/1.2))){ // Division by 1.2 used to tune the response to match observed league averages
+function simAtBat(batter,pitcher) {
+  var odds = batter.onbasepercentage*pitcher.whip/leagueAverage.whip;
+  if(Math.random() < odds){ 
     return true;
   }
   else{
@@ -323,7 +347,7 @@ function simAtBat(OBP,pitcher) {
 
 function determineHitType(team) {
   var batter = team.batters[team.currentHitterId];
-  var pitcher = getPitcher(team);
+  var pitcher = getOpponent(team).pitcher;
   var era = pitcher.era;
 
   var obp = batter.onbasepercentage;
@@ -339,9 +363,9 @@ function determineHitType(team) {
   var doubOdds = dbl/hits;
 
   // Add pitcher effect, tuned to match observed averages
-  hrOdds = hrOdds*(era/4);
-  tripOdds = tripOdds*(era/4);
-  doubOdds = doubOdds*(era/4);
+  hrOdds = hrOdds;//*(era/leagueAverage.era);
+  tripOdds = tripOdds;//*(era/leagueAverage.era);
+  doubOdds = doubOdds;//*(era/leagueAverage.era);
 
   if(checkIfWalk(percentWalks))
     return 1;
@@ -380,7 +404,6 @@ function moveRunners(hit,baseState) {
         baseState[base] = 0;
       else
         baseState[base] = baseState[base-1];
-      //alert(base+" "+baseState[base])
     }
   }
   return runs;

@@ -107,10 +107,8 @@
                   Hits: <input type="text" id="hitsBoxid9" name="hitsBox9"><br/>
                   Doubles: <input type="text" id="doublesBoxid9" name="doublesBox9"><br/>
                   <h3>Pitcher:</h3>
-                  ERA: <input type="text" id="eraBoxidTeam1" name="eraBox1"><br/>
-                  WHIP: <input type="text" id="whipBoxidTeam1" name="whipBox1">
-                   <h3>&nbsp;</h3>
-                  <input type="button" name="ResetVals" value="Set All to League Avg" onclick="setToLeagueAverage(1)" /><br/>
+                  ERA (Not in Use): <input type="text" id="eraBoxidTeam1" name="eraBox1"><br/>
+                  WHIP: <input type="text" id="whipBoxidTeam1" name="whipBox1"><br/>
                 </td>
                 <td>
                   <h3>&nbsp;</h3>
@@ -198,10 +196,8 @@
                   Hits: <input type="text" id="hitsBoxid18" name="hitsBox18"><br/>
                   Doubles: <input type="text" id="doublesBoxid18" name="doublesBox18"><br/>
                   <h3>Pitcher:</h3>
-                  ERA: <input type="text" id="eraBoxidTeam2" name="eraBox2"><br/>
-                  WHIP: <input type="text" id="whipBoxidTeam2" name="whipBox2">
-                   <h3>&nbsp;</h3>
-                  <input type="button" name="ResetVals" value="Set All to League Avg" onclick="setToLeagueAverage(2)" /><br/>
+                  ERA (Not in Use): <input type="text" id="eraBoxidTeam2" name="eraBox2"><br/>
+                  WHIP: <input type="text" id="whipBoxidTeam2" name="whipBox2"><br/>
                 </td>
                 <td>
                   <h3>&nbsp;</h3>
@@ -232,32 +228,34 @@
                   Plate Appearances: <input type="text" id="plateAppearanceBoxTeam1" name="plateAppearanceTeam1"><br/>
                   Hits: <input type="text" id="hitsBoxTeam1" name="hitsTeam1"><br/>
                   Doubles: <input type="text" id="doublesBoxTeam1" name="doublesTeam1"><br/>
-                  ERA: <input type="text" id="eraBoxTeam1" name="eraTeam1"><br/>
+                  ERA (Not in Use): <input type="text" id="eraBoxTeam1" name="eraTeam1"><br/>
+                  WHIP: <input type="text" id="whipBoxTeam1" name="whipTeam1"><br/>
                   <h3>&nbsp;</h3>
                   <input type="button" name="ResetTeam1Vals" value="Set All Team 1 Values" onclick="setToReference(1)" /><br/>
+                  <input type="button" name="ResetVals" value="Set Team 1 to League Avg" onclick="setToLeagueAverage(1)" /><br/>
                 </td>
                 <td>
                   <h3>&nbsp;</h3>
                   Triples: <input type="text" id="triplesBoxTeam1" name="triplesTeam1"><br/>
                   Home Runs: <input type="text" id="homeRunBoxTeam1" name="homeRunTeam1"><br/>
                   Walks: <input type="text" id="baseOnBallBoxTeam1" name="baseOnBallTeam1"><br/>
-                  WHIP: <input type="text" id="whipBoxTeam1" name="whipTeam1"><br/>
                 </td>
                 <td>
                   <h3>Team 2:</h3>
                   Plate Appearances: <input type="text" id="plateAppearanceBoxTeam2" name="plateAppearanceTeam2"><br/>
                   Hits: <input type="text" id="hitsBoxTeam2" name="hitsTeam2"><br/>
                   Doubles: <input type="text" id="doublesBoxTeam2" name="doublesTeam2"><br/>
-                  ERA: <input type="text" id="eraBoxTeam2" name="eraTeam2"><br/>
+                  ERA (Not in Use): <input type="text" id="eraBoxTeam2" name="eraTeam2"><br/>
+                  WHIP: <input type="text" id="whipBoxTeam2" name="whipTeam2"><br/>
                   <h3>&nbsp;</h3>
                   <input type="button" name="ResetTeam2Vals" value="Set All Team 2 Values" onclick="setToReference(2)" /><br/>
+                  <input type="button" name="ResetVals" value="Set Team 2 to League Avg" onclick="setToLeagueAverage(2)" /><br/>
                 </td>
                 <td>
                   <h3>&nbsp;</h3>
                   Triples: <input type="text" id="triplesBoxTeam2" name="triplesTeam2"><br/>
                   Home Runs: <input type="text" id="homeRunBoxTeam2" name="homeRunTeam2"><br/>
                   Walks: <input type="text" id="baseOnBallBoxTeam2" name="baseOnBallTeam2"><br/>
-                  WHIP: <input type="text" id="whipBoxTeam2" name="whipTeam2"><br/>
                 </td>
               </tr>
             </table>
@@ -289,19 +287,19 @@
           </div>
           <div id="about" class="hide">
             <h2>How the Simulation is Done</h2>
-            This simulation takes in the stats from all players on a team (one starting pitcher, nine batters), then simulates each at bat using a Monte Carlo approach. The stats are used to set the percentage chance that an event occurs, and then the program rolls a dice and decides whether that event occurs. As an example each at bat's result (hit, walk, or out) is determined by a combination of the pitchers "Walks and Hits per Inning Pitched" (WHIP) and the batters "On Base Percentage" (OBP). If it's a hit, the batters distribution of extra base hit probability is used to decide whether they hit a single, double, triple or homerun. These way these values are used is tuned such that when fed the average Major League hitters stats for every batter and pitcher, the output value for runs per game matches the league average (2015 stats used for tuning).<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;This simulation takes in the stats from all players on a team (one starting pitcher, nine batters), then simulates each at bat using a Monte Carlo approach. The stats are used to set the percentage chance that an event occurs, and then the program rolls a dice and decides whether that event occurs. As an example each at bat's result (hit, walk, or out) is determined by a combination of the pitchers "Walks and Hits per Inning Pitched" (WHIP) and the batters "On Base Percentage" (OBP). If it's a hit, the batters distribution of extra base hit probability is used to decide whether they hit a single, double, triple or homerun. These way these values are used is tuned such that when fed the average Major League hitters stats for every batter and pitcher, the output value for runs per game matches the league average (2015 stats used for tuning).<br/>
 
-            The baserunning is very simplistic and follows "ghost man" rules from childhood games. A runner only advances by the number of bases equivalent to the hit. So, a single moves each runner one base, a double two bases, and so-on. This also means there is no such thing as a sacrifice fly in this simulation. However, both of these issues apply to both teams equally and should only have a small effect compared to the statistical fluctuation.<br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;The baserunning is very simplistic and follows "ghost man" rules from childhood games. A runner only advances by the number of bases equivalent to the hit. So, a single moves each runner one base, a double two bases, and so-on. This also means there is no such thing as a sacrifice fly in this simulation. However, both of these issues apply to both teams equally and should only have a small effect compared to the statistical fluctuation.<br/>
 
             <h2>Stats in Use</h2>
-            I've chosen to not rely on inputting average and slugging percentage, and then calling it a day. I tried this initially, as it's the simplest method, however the predictive power was weak at best. Fed the lineups from the 2015 Cubs and Reds, this simple form only found the Cubs to be marginally better than the Reds. This was simply not true. Thus, I moved to requiring more detailed information for each batter at the cost of an ugly form and a large commitment of time from the user. However, the accuracy of the simulation is much better now: coming within 7% of the Cubs vs Reds (2015) win-percentage over the course of 10,000 simulations. Given the lack of baserunning, sac-fly, etc. I'm content with that result. 
+            &nbsp;&nbsp;&nbsp;&nbsp;I've chosen to not rely on inputting average and slugging percentage, and then calling it a day. I tried this initially, as it's the simplest method, however the predictive power was weak at best. Fed the lineups from the 2015 Cubs and Reds, this simple form only found the Cubs to be marginally better than the Reds. This was simply not true. Thus, I moved to requiring more detailed information for each batter at the cost of an ugly form and a large commitment of time from the user. However, the accuracy of the simulation is much better now: coming within 7% of the Cubs vs Reds (2015) win-percentage over the course of 10,000 simulations. Given the lack of baserunning, sac-fly, etc. I'm content with that result. 
 
             <h2>Improvements to Come</h2>
-            Currently, the pitching stats are limited. Part of that is due to being under-development... part of that is because accounting for pitching is really quite difficult. Sample sizes are small in terms of game-long perfomance, finding predictive inputs is difficult, and finding a nice way to merge the pitcher and the batter to produce reliable outputs of their head-to-head matchups is questionable. Currently, I use WHIP and ERA (earned run average) to scale the batter's chance of successful at bats and hitting for extra bases. Improvements to this system are underway.<br/> 
+            &nbsp;&nbsp;&nbsp;&nbsp;Currently, the pitching stats are limited. Part of that is due to being under-development... part of that is because accounting for pitching is really quite difficult. Sample sizes are small in terms of game-long perfomance, finding predictive inputs is difficult, and finding a nice way to merge the pitcher and the batter to produce reliable outputs of their head-to-head matchups is questionable. Currently, I use WHIP to scale the batter's chance of successful at bats, with the scaling set against the league average WHIP. Improvements to this system are underway. However, fed Clayton Kershaws WHIP and an average hitting lineup, it reproduces his ERA within tolerance. Same for Alfredo Simon. I haven't done much testing in the middle of the WHIP spectrum, but it seems to do a pretty good job on the tests I have run.<br/> 
 
-            And with that, I release this to you to play with. Enjoy tinkering with lineups to see how the runs/game can change. I also think you'll find the random fluctuations to be much larger than you expect. Try simulating a 162 game season with two equivalent teams, you'll see seasons where one team wins more than 90 games (the accepted threshold of an excellent team) quite frequently; which is strange considering both teams are identical. But, thems the breaks and also why most experts agree that in order to always select the true best team, we'd need a 400+ game season. Statistics are fun. <br/><br/>
+            &nbsp;&nbsp;&nbsp;&nbsp;And with that, I release this to you to play with. Enjoy tinkering with lineups to see how the runs/game can change. I also think you'll find the random fluctuations to be much larger than you expect. Try simulating a 162 game season with two equivalent teams, you'll see seasons where one team wins more than 90 games (the accepted threshold of an excellent team) quite frequently; which is strange considering both teams are identical. But, thems the breaks and also why most experts agree that in order to always select the true best team, we'd need a 400+ game season. Statistics are fun. <br/><br/>
             
-            I hope to add more features, such as tracking individual batter performance, the ability to lookup already completed teams, etc... but those are still far away. In the meantime, happy simulating. If you find bugs or strange behavior, please mail to zaglamir@gmail.com.
+            &nbsp;&nbsp;&nbsp;&nbsp;I hope to add more features, such as tracking individual batter performance, the ability to lookup already completed teams, etc... but those are still far away. In the meantime, happy simulating. If you find bugs or strange behavior, please mail to zaglamir@gmail.com.
             <br/><br/>
             -Zach<br/>
             &copy; Z.W. Miller - 2016
