@@ -3,6 +3,7 @@
 // Everything else - ZW Miller 2016
 
 var globalwalkers = [];
+var walkSpeed;
 
 "use strict";
 
@@ -11,6 +12,8 @@ var easel = {
   selector: 0,
   wcolors:  ["#D41316","#55F01D","#F8FF6B","#FFDB3B","#00E3E0","#3064FF","#F261FF"],
   wpcolors: ["#9C1F21","#328C11","#CCD613","#E89F00","#1AABA9","#1643C9","#B221BF"],
+  mapcolor: ["#06EEFF","#06EEFF","#06EEFF","#25FF1D","#25FF1D","#25FF1D"],
+  mappcolor:["#1668E3","#2D3BFF","#27A9FF","#1AB114","#1DC817","#127C0E"],
   bgcolor: "#333333"
 } 
 var timer;
@@ -118,7 +121,7 @@ function main() {
   createTable(height, width);
   space = create2dArray(height, width);
   globalwalkers = createInitialWalkers(7);
-
+  walkSpeed = 100;
   runProgram(globalwalkers);
 }
 
@@ -128,7 +131,7 @@ function runProgram(walkers){
   var callback = function() {
     runProgram(walkers);
   }
-  timer = setTimeout(callback,100);
+  timer = setTimeout(callback,walkSpeed);
 }
 
 function evolveWalkers(walkers){
@@ -184,7 +187,7 @@ if (window.attachEvent) {
 
 function addUserWalker(){ 
   stopProgramLoop();
-  setTimeout(handleWalkers(),100);
+  setTimeout(handleWalkers(),walkSpeed);
 }
 
 function stopProgramLoop(){
@@ -197,6 +200,27 @@ function handleWalkers(){
   var userLeadColor = "#"+document.getElementById("leadColor").value; 
   var userTrailColor = "#"+document.getElementById("trailColor").value; 
   globalwalkers.unshift(instantiateWalker(userLeadColor,userTrailColor));
+  runProgram(globalwalkers);
+}
+
+function addMapWalkers(){
+  stopProgramLoop();
+  setTimeout(startMapWalkers(),walkSpeed);
+}
+function startMapWalkers(){
+
+  for(var walkN=0; walkN<easel.mapcolor.length; walkN++){
+    globalwalkers.unshift(instantiateWalker(easel.mapcolor[walkN],easel.mappcolor[walkN]));
+  }
+    runProgram(globalwalkers);
+}
+
+function toggleWalkSpeed(){
+  stopProgramLoop();
+  if(walkSpeed == 100)
+    walkSpeed = 20;
+  else if(walkSpeed == 20)
+    walkSpeed = 100;
   runProgram(globalwalkers);
 }
 
